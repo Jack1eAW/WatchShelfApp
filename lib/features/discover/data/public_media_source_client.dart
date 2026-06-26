@@ -24,14 +24,79 @@ class PublicMediaSourceClient {
     'mystery',
     'western',
   ];
-  static const _knownMovieImdbIds = {
-    'black panther': 'tt1825683',
-    'lady bird': 'tt4925292',
-    'citizen kane': 'tt0033467',
-    'blackkklansman': 'tt7349662',
-    'moonlight': 'tt4975722',
-    'wonder woman': 'tt0451279',
-  };
+  static const _knownMovieMetadata =
+      <String, ({String imdbId, String releaseDate, double voteAverage})>{
+        'black panther': (
+          imdbId: 'tt1825683',
+          releaseDate: '2018-02-16',
+          voteAverage: 7.3,
+        ),
+        'lady bird': (
+          imdbId: 'tt4925292',
+          releaseDate: '2017-11-03',
+          voteAverage: 7.4,
+        ),
+        'citizen kane': (
+          imdbId: 'tt0033467',
+          releaseDate: '1941-09-05',
+          voteAverage: 8.2,
+        ),
+        'blackkklansman': (
+          imdbId: 'tt7349662',
+          releaseDate: '2018-08-10',
+          voteAverage: 7.5,
+        ),
+        'moonlight': (
+          imdbId: 'tt4975722',
+          releaseDate: '2016-11-18',
+          voteAverage: 7.4,
+        ),
+        'wonder woman': (
+          imdbId: 'tt0451279',
+          releaseDate: '2017-06-02',
+          voteAverage: 7.3,
+        ),
+        'all about eve': (
+          imdbId: 'tt0042192',
+          releaseDate: '1950-10-27',
+          voteAverage: 8.2,
+        ),
+        'metropolis': (
+          imdbId: 'tt0017136',
+          releaseDate: '1927-03-13',
+          voteAverage: 8.2,
+        ),
+        'a quiet place': (
+          imdbId: 'tt6644200',
+          releaseDate: '2018-04-06',
+          voteAverage: 7.5,
+        ),
+        'dunkirk': (
+          imdbId: 'tt5013056',
+          releaseDate: '2017-07-21',
+          voteAverage: 7.8,
+        ),
+        'selma': (
+          imdbId: 'tt1020072',
+          releaseDate: '2015-01-09',
+          voteAverage: 7.5,
+        ),
+        'spotlight': (
+          imdbId: 'tt1895587',
+          releaseDate: '2015-11-20',
+          voteAverage: 8.1,
+        ),
+        'star wars: episode viii - the last jedi': (
+          imdbId: 'tt2527336',
+          releaseDate: '2017-12-15',
+          voteAverage: 6.8,
+        ),
+        'the shape of water': (
+          imdbId: 'tt5580390',
+          releaseDate: '2017-12-22',
+          voteAverage: 7.3,
+        ),
+      };
 
   final Dio _dio;
   final Map<String, Future<MediaItem>> _movieDetailsCache = {};
@@ -191,8 +256,9 @@ class PublicMediaSourceClient {
   ) {
     final imdbId = json['imdbId'] as String?;
     final title = json['title'] as String? ?? 'Movie';
+    final knownMetadata = _knownMovieMetadata[_titleKey(title)];
     final sourceId =
-        _idFromImdbId(imdbId ?? _knownMovieImdbIds[_titleKey(title)]) ??
+        _idFromImdbId(imdbId ?? knownMetadata?.imdbId) ??
         ((categoryIndex + 1) * 10000 +
             (json['id'] as int? ?? _stableId(json['title'] as String?)));
 
@@ -202,11 +268,12 @@ class PublicMediaSourceClient {
       overview:
           'A ${_categoryLabel(category).toLowerCase()} film from the '
           'public movie catalog.',
-      releaseDate: '',
+      releaseDate: knownMetadata?.releaseDate ?? '',
       genres: [_categoryLabel(category)],
       mediaType: MediaType.movie,
+      voteAverage: knownMetadata?.voteAverage,
       posterPath: json['posterURL'] as String?,
-      imdbId: imdbId ?? _knownMovieImdbIds[_titleKey(title)],
+      imdbId: imdbId ?? knownMetadata?.imdbId,
     );
   }
 
