@@ -177,9 +177,10 @@ class _LoadMoreFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.isLoadingMore) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 18),
-        child: CupertinoActivityIndicator(),
+      return const Shimmer(
+        child: Column(
+          children: [MediaListSkeletonTile(), MediaListSkeletonTile()],
+        ),
       );
     }
 

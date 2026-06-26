@@ -38,7 +38,7 @@ class DetailsScreen extends ConsumerWidget {
             message: 'Unable to load details.',
             onRetry: () => ref.invalidate(mediaDetailsProvider(identity)),
           ),
-          loading: () => const LoadingView(),
+          loading: () => const LoadingView(style: LoadingViewStyle.details),
         ),
       ),
     );
