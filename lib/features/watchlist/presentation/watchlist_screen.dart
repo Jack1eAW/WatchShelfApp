@@ -20,6 +20,7 @@ class WatchlistScreen extends ConsumerWidget {
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(middle: Text('Watchlist')),
       child: SafeArea(
+        bottom: false,
         child: itemsState.when(
           data: (items) {
             if (items.isEmpty) {
@@ -30,6 +31,7 @@ class WatchlistScreen extends ConsumerWidget {
             }
 
             return ListView.builder(
+              padding: const EdgeInsets.only(bottom: 116),
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index];

@@ -15,14 +15,22 @@ class WatchShelfTheme {
     barBackgroundColor: CupertinoColors.systemBackground,
     textTheme: CupertinoTextThemeData(
       navLargeTitleTextStyle: TextStyle(
+        inherit: false,
+        fontFamily: 'CupertinoSystemText',
         fontSize: 34,
         fontWeight: FontWeight.w700,
+        letterSpacing: 0,
         color: CupertinoColors.label,
+        decoration: TextDecoration.none,
       ),
       navTitleTextStyle: TextStyle(
+        inherit: false,
+        fontFamily: 'CupertinoSystemText',
         fontSize: 17,
         fontWeight: FontWeight.w600,
+        letterSpacing: 0,
         color: CupertinoColors.label,
+        decoration: TextDecoration.none,
       ),
     ),
   );

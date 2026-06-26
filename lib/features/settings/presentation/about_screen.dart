@@ -8,8 +8,9 @@ class AboutScreen extends StatelessWidget {
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(middle: Text('About')),
       child: SafeArea(
+        bottom: false,
         child: ListView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 128),
           children: const [
             Text(
               'WatchShelf',

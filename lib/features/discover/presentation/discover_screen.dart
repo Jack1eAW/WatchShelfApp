@@ -46,6 +46,7 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(middle: Text('Discover')),
       child: SafeArea(
+        bottom: false,
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
@@ -116,6 +117,7 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
                     SliverToBoxAdapter(
                       child: _LoadMoreFooter(state: discoverState),
                     ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 108)),
                   ],
                 );
               },

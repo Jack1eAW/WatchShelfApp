@@ -39,32 +39,40 @@ class MediaListSkeletonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: CupertinoColors.separator, width: 0.5),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SkeletonBox(width: 88, height: 132, borderRadius: 7),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                SizedBox(height: 4),
-                SkeletonBox(width: 170, height: 18, borderRadius: 5),
-                SizedBox(height: 10),
-                SkeletonBox(width: 110, height: 14, borderRadius: 5),
-                SizedBox(height: 14),
-                SkeletonBox(width: 86, height: 22, borderRadius: 7),
-              ],
-            ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: CupertinoColors.secondarySystemGroupedBackground.withValues(
+            alpha: 0.72,
           ),
-        ],
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: CupertinoColors.white.withValues(alpha: 0.68),
+            width: 0.8,
+          ),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SkeletonBox(width: 88, height: 132, borderRadius: 8),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  SizedBox(height: 4),
+                  SkeletonBox(width: 170, height: 18, borderRadius: 6),
+                  SizedBox(height: 10),
+                  SkeletonBox(width: 110, height: 14, borderRadius: 6),
+                  SizedBox(height: 14),
+                  SkeletonBox(width: 86, height: 22, borderRadius: 9),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
