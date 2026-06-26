@@ -61,10 +61,7 @@ class MediaListTile extends StatelessWidget {
                     spacing: 8,
                     runSpacing: 6,
                     children: [
-                      _Pill(
-                        icon: CupertinoIcons.star_fill,
-                        text: item.voteAverage.toStringAsFixed(1),
-                      ),
+                      _SourceRatingPill(item: item),
                       if (personalRating != null)
                         _Pill(
                           icon: CupertinoIcons.person_crop_circle_fill,
@@ -83,11 +80,46 @@ class MediaListTile extends StatelessWidget {
   }
 }
 
+class _SourceRatingPill extends StatelessWidget {
+  const _SourceRatingPill({required this.item});
+
+  final MediaItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    final rating = item.voteAverage;
+    final source = switch (item.mediaType) {
+      MediaType.movie => 'IMDb',
+      MediaType.tv => 'TV rating',
+    };
+
+    if (rating == null || rating <= 0) {
+      return _Pill(
+        icon: CupertinoIcons.star,
+        iconColor: CupertinoColors.systemGrey,
+        text: item.mediaType == MediaType.movie
+            ? 'IMDb rating unavailable'
+            : 'Rating unavailable',
+      );
+    }
+
+    return _Pill(
+      icon: CupertinoIcons.star_fill,
+      text: '$source ${rating.toStringAsFixed(1)}',
+    );
+  }
+}
+
 class _Pill extends StatelessWidget {
-  const _Pill({required this.icon, required this.text});
+  const _Pill({
+    required this.icon,
+    required this.text,
+    this.iconColor = CupertinoColors.systemYellow,
+  });
 
   final IconData icon;
   final String text;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +132,7 @@ class _Pill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 13, color: CupertinoColors.systemYellow),
+          Icon(icon, size: 13, color: iconColor),
           const SizedBox(width: 4),
           Text(
             text,

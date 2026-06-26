@@ -24,9 +24,10 @@ class MediaItem {
     required this.releaseDate,
     required this.genres,
     required this.mediaType,
-    required this.voteAverage,
+    this.voteAverage,
     this.posterPath,
     this.backdropPath,
+    this.imdbId,
   });
 
   factory MediaItem.fromTmdbJson(Map<String, dynamic> json) {
@@ -45,9 +46,19 @@ class MediaItem {
       releaseDate: date,
       genres: _parseGenres(json['genres'] ?? json['genre_names']),
       mediaType: type,
-      voteAverage: (json['vote_average'] as num? ?? 0).toDouble(),
-      posterPath: json['poster_path'] as String?,
-      backdropPath: json['backdrop_path'] as String?,
+      voteAverage: (json['vote_average'] as num?)?.toDouble(),
+      posterPath: _firstString(json, const [
+        'poster_path',
+        'posterUrl',
+        'poster_url',
+        'cover_art_url',
+      ]),
+      backdropPath: _firstString(json, const [
+        'backdrop_path',
+        'backdropUrl',
+        'backdrop_url',
+      ]),
+      imdbId: _firstString(json, const ['imdb_id', 'imdbId']),
     );
   }
 
@@ -59,9 +70,10 @@ class MediaItem {
       releaseDate: json['releaseDate'] as String,
       genres: (json['genres'] as List<dynamic>).cast<String>(),
       mediaType: MediaTypeX.fromWire(json['mediaType'] as String),
-      voteAverage: (json['voteAverage'] as num).toDouble(),
+      voteAverage: (json['voteAverage'] as num?)?.toDouble(),
       posterPath: json['posterPath'] as String?,
       backdropPath: json['backdropPath'] as String?,
+      imdbId: json['imdbId'] as String?,
     );
   }
 
@@ -71,9 +83,10 @@ class MediaItem {
   final String releaseDate;
   final List<String> genres;
   final MediaType mediaType;
-  final double voteAverage;
+  final double? voteAverage;
   final String? posterPath;
   final String? backdropPath;
+  final String? imdbId;
 
   String get year {
     if (releaseDate.length < 4) {
@@ -95,6 +108,7 @@ class MediaItem {
       'voteAverage': voteAverage,
       'posterPath': posterPath,
       'backdropPath': backdropPath,
+      'imdbId': imdbId,
     };
   }
 
@@ -113,5 +127,15 @@ class MediaItem {
       return value.whereType<String>().toList();
     }
     return const [];
+  }
+
+  static String? _firstString(Map<String, dynamic> json, List<String> keys) {
+    for (final key in keys) {
+      final value = json[key];
+      if (value is String && value.trim().isNotEmpty) {
+        return value;
+      }
+    }
+    return null;
   }
 }

@@ -42,7 +42,7 @@ class DetailsHeader extends StatelessWidget {
                 style: const TextStyle(color: CupertinoColors.secondaryLabel),
               ),
               const SizedBox(height: 12),
-              Text('Average ${item.voteAverage.toStringAsFixed(1)}/10'),
+              _SourceRatingText(item: item),
               if (personalRating != null) ...[
                 const SizedBox(height: 6),
                 Text('Your rating $personalRating/10'),
@@ -52,5 +52,30 @@ class DetailsHeader extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class _SourceRatingText extends StatelessWidget {
+  const _SourceRatingText({required this.item});
+
+  final MediaItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    final rating = item.voteAverage;
+    if (rating == null || rating <= 0) {
+      return Text(
+        item.mediaType == MediaType.movie
+            ? 'IMDb rating unavailable'
+            : 'Rating unavailable',
+        style: const TextStyle(color: CupertinoColors.secondaryLabel),
+      );
+    }
+
+    final source = switch (item.mediaType) {
+      MediaType.movie => 'IMDb rating',
+      MediaType.tv => 'TV rating',
+    };
+    return Text('$source ${rating.toStringAsFixed(1)}/10');
   }
 }

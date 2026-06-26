@@ -4,14 +4,18 @@ WatchShelf is an iOS-first Flutter app for browsing movies and TV shows, opening
 
 ## Features
 
-- Trending movie and TV discovery
-- Search across movies and TV shows
+- Separate Movies and TV Shows discovery tabs
+- Infinite scrolling for trending and search result pages
+- Search for movies or TV shows within the selected media tab
+- Debounced search to avoid repeated slow network requests while typing
+- Poster/cover art parsing with TMDB image URL normalization
+- Public no-key fallback catalogs with real poster URLs when no TMDB API key is configured
 - Details pages with poster, title, year, genres, overview, media type, and average rating
 - Local watchlist add/remove
 - Local personal ratings from 1 to 10
 - Watchlist view with saved titles and personal rating badges
 - Settings/About tab with data-source and version notes
-- Mock fallback data so the app runs without live API setup
+- Public fallback data so the app runs without live TMDB setup
 
 ## Tech Stack
 
@@ -57,7 +61,10 @@ flutter run \
   --dart-define=TMDB_IMAGE_BASE_URL=https://image.tmdb.org/t/p/w500
 ```
 
-If `TMDB_API_KEY` is omitted, the app uses bundled mock data.
+If `TMDB_API_KEY` is omitted, the app retrieves browsable movie pages from
+SampleAPIs, movie search/details/ratings directly from IMDbAPI, and TV shows from
+TVMaze. A small local catalog is only used if those public sources are
+unreachable.
 
 ## Build
 
@@ -73,7 +80,7 @@ Android is scaffolded for portability, but the product direction and UI are iOS-
 flutter run
 ```
 
-The default run uses mock data. Add `--dart-define=TMDB_API_KEY=...` for live TMDB-style data.
+The default run uses public no-key fallback data. Add `--dart-define=TMDB_API_KEY=...` for live TMDB-style data.
 
 ## Test
 
@@ -85,7 +92,7 @@ flutter test --coverage
 
 ## Known Limitations
 
-- Live API image URL normalization is minimal because mock data already stores full image URLs.
+- Public fallback sources may have less metadata than TMDB for browsed movie pages until IMDb enrichment finishes.
 - Authentication, account sync, and remote watchlists are out of scope.
 - Offline cache beyond local watchlist/ratings is not implemented.
 - App version is displayed as a placeholder in the About screen.

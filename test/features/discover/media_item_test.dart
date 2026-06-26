@@ -40,4 +40,32 @@ void main() {
     expect(item.mediaType, MediaType.tv);
     expect(item.storageKey, 'tv:77');
   });
+
+  test('parses cover art URL aliases', () {
+    final item = MediaItem.fromTmdbJson({
+      'id': 88,
+      'media_type': 'movie',
+      'title': 'Cover Story',
+      'overview': '',
+      'release_date': '2026-01-01',
+      'cover_art_url': 'https://cdn.example.com/cover.jpg',
+      'backdrop_url': 'https://cdn.example.com/backdrop.jpg',
+      'vote_average': 6.5,
+    });
+
+    expect(item.posterPath, 'https://cdn.example.com/cover.jpg');
+    expect(item.backdropPath, 'https://cdn.example.com/backdrop.jpg');
+  });
+
+  test('preserves missing source rating as null', () {
+    final item = MediaItem.fromTmdbJson({
+      'id': 99,
+      'media_type': 'movie',
+      'title': 'Unrated Story',
+      'overview': '',
+      'release_date': '2026-01-01',
+    });
+
+    expect(item.voteAverage, isNull);
+  });
 }

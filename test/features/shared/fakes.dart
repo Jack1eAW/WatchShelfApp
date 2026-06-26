@@ -16,15 +16,34 @@ class FakeMediaRepository implements MediaRepository {
   }
 
   @override
-  Future<List<MediaItem>> search(String query) async {
+  Future<List<MediaItem>> search(
+    String query, {
+    required MediaType mediaType,
+    int page = 1,
+  }) async {
+    if (page > 1) {
+      return const [];
+    }
     final lower = query.toLowerCase();
     return items
-        .where((item) => item.title.toLowerCase().contains(lower))
+        .where(
+          (item) =>
+              item.mediaType == mediaType &&
+              item.title.toLowerCase().contains(lower),
+        )
         .toList();
   }
 
   @override
-  Future<List<MediaItem>> trending() async => items;
+  Future<List<MediaItem>> trending({
+    required MediaType mediaType,
+    int page = 1,
+  }) async {
+    if (page > 1) {
+      return const [];
+    }
+    return items.where((item) => item.mediaType == mediaType).toList();
+  }
 }
 
 class MemoryWatchlistRepository implements WatchlistRepository {

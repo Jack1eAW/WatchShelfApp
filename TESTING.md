@@ -5,10 +5,12 @@
 The current suite covers:
 
 - TMDB-style media model parsing for movies and TV shows
-- Repository fallback behavior when no API key is configured
+- Cover-art alias parsing and TMDB image URL normalization
+- Repository public-source fallback behavior, media type separation, and multi-page paging when no API key is configured
+- Manual smoke checks for IMDbAPI `Spider-Man` search and aggregate rating parsing
 - Watchlist add/remove controller behavior
 - Personal rating save/update controller behavior
-- Discover screen rendering with trending media
+- Discover screen rendering with trending movies, TV tab switching, and search
 - Watchlist screen rendering with saved media and personal ratings
 
 ## Run Tests

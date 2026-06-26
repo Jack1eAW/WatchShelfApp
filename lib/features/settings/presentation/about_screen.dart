@@ -24,8 +24,8 @@ class AboutScreen extends StatelessWidget {
             AboutInfoTile(
               title: 'Data source',
               body:
-                  'TMDB-style API integration with a mock fallback so the '
-                  'app runs without a configured API key.',
+                  'TMDB-style API integration with public no-key fallback '
+                  'sources for movie and TV catalogs.',
             ),
             AboutInfoTile(title: 'Version', body: '1.0.0 placeholder'),
             AboutInfoTile(

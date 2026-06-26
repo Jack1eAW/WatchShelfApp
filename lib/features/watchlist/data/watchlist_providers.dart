@@ -46,7 +46,6 @@ class WatchlistController extends AsyncNotifier<List<String>> {
     if (!keys.contains(item.storageKey)) {
       state = AsyncData([...keys, item.storageKey]);
     }
-    ref.invalidate(watchlistItemsProvider);
   }
 
   Future<void> remove(String mediaKey) async {
@@ -54,6 +53,5 @@ class WatchlistController extends AsyncNotifier<List<String>> {
     state = AsyncData(
       [...?state.value].where((key) => key != mediaKey).toList(),
     );
-    ref.invalidate(watchlistItemsProvider);
   }
 }
