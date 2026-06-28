@@ -40,23 +40,21 @@ class MediaListSkeletonTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: CupertinoColors.secondarySystemGroupedBackground.withValues(
-            alpha: 0.72,
-          ),
-          borderRadius: BorderRadius.circular(18),
+          color: CupertinoColors.systemBackground.withValues(alpha: 0.68),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: CupertinoColors.white.withValues(alpha: 0.68),
+            color: CupertinoColors.white.withValues(alpha: 0.72),
             width: 0.8,
           ),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SkeletonBox(width: 88, height: 132, borderRadius: 8),
+            const SkeletonBox(width: 90, height: 135, borderRadius: 10),
             const SizedBox(width: 14),
             Expanded(
               child: Column(

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,43 +45,42 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
     final selectedType = ref.watch(selectedDiscoverTypeProvider);
 
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(middle: Text('Discover')),
-      child: SafeArea(
-        bottom: false,
+      backgroundColor: CupertinoColors.systemGroupedBackground,
+      child: DecoratedBox(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFFFF7FA),
+              CupertinoColors.systemGroupedBackground,
+              Color(0xFFF2F8F8),
+            ],
+            stops: [0, 0.48, 1],
+          ),
+        ),
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
-                child: CupertinoSearchTextField(
-                  placeholder: 'Search movies and shows',
-                  onChanged: _onSearchChanged,
-                ),
+            CupertinoSliverNavigationBar(
+              largeTitle: const Text('Discover'),
+              border: null,
+              backgroundColor: CupertinoColors.systemBackground.withValues(
+                alpha: 0.72,
               ),
+              stretch: true,
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 10),
-                child: CupertinoSlidingSegmentedControl<MediaType>(
-                  groupValue: selectedType,
-                  children: const {
-                    MediaType.movie: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 18),
-                      child: Text('Movies'),
-                    ),
-                    MediaType.tv: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 18),
-                      child: Text('TV Shows'),
-                    ),
-                  },
-                  onValueChanged: (value) {
-                    if (value != null) {
-                      ref
-                          .read(selectedDiscoverTypeProvider.notifier)
-                          .select(value);
-                      _scrollController.jumpTo(0);
-                    }
+                padding: const EdgeInsets.fromLTRB(14, 8, 14, 12),
+                child: _DiscoverControls(
+                  selectedType: selectedType,
+                  onSearchChanged: _onSearchChanged,
+                  onTypeChanged: (value) {
+                    ref
+                        .read(selectedDiscoverTypeProvider.notifier)
+                        .select(value);
+                    _scrollController.jumpTo(0);
                   },
                 ),
               ),
@@ -167,6 +167,95 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
         'mediaType': item.mediaType.wireName,
         'id': '${item.id}',
       },
+    );
+  }
+}
+
+class _DiscoverControls extends StatelessWidget {
+  const _DiscoverControls({
+    required this.selectedType,
+    required this.onSearchChanged,
+    required this.onTypeChanged,
+  });
+
+  final MediaType selectedType;
+  final ValueChanged<String> onSearchChanged;
+  final ValueChanged<MediaType> onTypeChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: CupertinoColors.black.withValues(alpha: 0.08),
+            blurRadius: 22,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(22),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: CupertinoColors.systemBackground.withValues(alpha: 0.68),
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(
+                color: CupertinoColors.white.withValues(alpha: 0.74),
+                width: 0.8,
+              ),
+            ),
+            child: Column(
+              children: [
+                CupertinoSearchTextField(
+                  placeholder: 'Search movies and shows',
+                  backgroundColor: CupertinoColors.systemGrey6.withValues(
+                    alpha: 0.72,
+                  ),
+                  borderRadius: BorderRadius.circular(14),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 11,
+                  ),
+                  onChanged: onSearchChanged,
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: CupertinoSlidingSegmentedControl<MediaType>(
+                    groupValue: selectedType,
+                    backgroundColor: CupertinoColors.systemGrey5.withValues(
+                      alpha: 0.56,
+                    ),
+                    thumbColor: CupertinoColors.systemBackground.withValues(
+                      alpha: 0.92,
+                    ),
+                    children: const {
+                      MediaType.movie: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 7),
+                        child: Text('Movies'),
+                      ),
+                      MediaType.tv: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 7),
+                        child: Text('TV Shows'),
+                      ),
+                    },
+                    onValueChanged: (value) {
+                      if (value != null) {
+                        onTypeChanged(value);
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

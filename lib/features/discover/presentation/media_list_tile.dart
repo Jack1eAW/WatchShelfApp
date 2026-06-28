@@ -25,77 +25,116 @@ class MediaListTile extends StatelessWidget {
       padding: EdgeInsets.zero,
       onPressed: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(18),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: CupertinoColors.secondarySystemGroupedBackground
-                    .withValues(alpha: 0.72),
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(
-                  color: CupertinoColors.white.withValues(alpha: 0.68),
-                  width: 0.8,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: CupertinoColors.black.withValues(alpha: 0.06),
-                    blurRadius: 18,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: CupertinoColors.black.withValues(alpha: 0.08),
+                blurRadius: 20,
+                offset: const Offset(0, 9),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MediaPoster(imageUrl: item.posterPath, title: item.title),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                            color: CupertinoColors.label,
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: CupertinoColors.systemBackground.withValues(
+                    alpha: 0.68,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: CupertinoColors.white.withValues(alpha: 0.72),
+                    width: 0.8,
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: CupertinoColors.black.withValues(
+                              alpha: 0.18,
+                            ),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
                           ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          '${item.year} • ${item.mediaType.label}',
-                          style: const TextStyle(
-                            color: CupertinoColors.secondaryLabel,
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 6,
+                        ],
+                      ),
+                      child: MediaPoster(
+                        imageUrl: item.posterPath,
+                        title: item.title,
+                        width: 90,
+                        height: 135,
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _SourceRatingPill(item: item),
-                            if (personalRating != null)
-                              _Pill(
-                                icon: CupertinoIcons.person_crop_circle_fill,
-                                text: '$personalRating/10',
+                            Text(
+                              item.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 0,
+                                color: CupertinoColors.label,
                               ),
+                            ),
+                            const SizedBox(height: 7),
+                            Text(
+                              '${item.year}  ·  ${item.mediaType.label}',
+                              style: const TextStyle(
+                                color: CupertinoColors.secondaryLabel,
+                                fontSize: 14,
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 6,
+                              children: [
+                                _SourceRatingPill(item: item),
+                                if (personalRating != null)
+                                  _Pill(
+                                    icon:
+                                        CupertinoIcons.person_crop_circle_fill,
+                                    text: '$personalRating/10',
+                                  ),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                  if (trailing != null) ...[
-                    const SizedBox(width: 8),
-                    trailing!,
+                    if (trailing != null) ...[
+                      const SizedBox(width: 8),
+                      trailing!,
+                    ] else
+                      const Padding(
+                        padding: EdgeInsets.only(top: 56, right: 2),
+                        child: Icon(
+                          CupertinoIcons.chevron_forward,
+                          size: 15,
+                          color: CupertinoColors.tertiaryLabel,
+                        ),
+                      ),
                   ],
-                ],
+                ),
               ),
             ),
           ),
@@ -151,10 +190,10 @@ class _Pill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: CupertinoColors.systemBackground.withValues(alpha: 0.62),
-        borderRadius: BorderRadius.circular(9),
+        color: CupertinoColors.systemBackground.withValues(alpha: 0.78),
+        borderRadius: BorderRadius.circular(11),
         border: Border.all(
-          color: CupertinoColors.white.withValues(alpha: 0.58),
+          color: CupertinoColors.white.withValues(alpha: 0.7),
           width: 0.6,
         ),
       ),
