@@ -32,10 +32,17 @@ class GenreChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: CupertinoColors.systemGrey6,
-        borderRadius: BorderRadius.circular(8),
+        color: CupertinoColors.systemBackground.withValues(alpha: 0.72),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: CupertinoColors.white.withValues(alpha: 0.72),
+          width: 0.7,
+        ),
       ),
-      child: Text(label, style: const TextStyle(fontSize: 13)),
+      child: Text(
+        label,
+        style: const TextStyle(fontSize: 13, letterSpacing: 0),
+      ),
     );
   }
 }

@@ -52,9 +52,24 @@ class RatingButton extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: selected
-              ? CupertinoColors.systemIndigo
-              : CupertinoColors.systemGrey6,
-          borderRadius: BorderRadius.circular(8),
+              ? CupertinoColors.systemPink
+              : CupertinoColors.systemBackground.withValues(alpha: 0.72),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: selected
+                ? CupertinoColors.systemPink
+                : CupertinoColors.white.withValues(alpha: 0.72),
+            width: 0.8,
+          ),
+          boxShadow: selected
+              ? [
+                  BoxShadow(
+                    color: CupertinoColors.systemPink.withValues(alpha: 0.24),
+                    blurRadius: 12,
+                    offset: const Offset(0, 5),
+                  ),
+                ]
+              : null,
         ),
         child: Text(
           '$rating',

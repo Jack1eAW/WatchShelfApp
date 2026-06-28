@@ -30,8 +30,27 @@ class DetailsScreen extends ConsumerWidget {
     final detailsState = ref.watch(mediaDetailsProvider(identity));
 
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(middle: Text('Details')),
-      child: SafeArea(
+      backgroundColor: CupertinoColors.systemGroupedBackground,
+      navigationBar: CupertinoNavigationBar(
+        middle: const Text('Details'),
+        border: null,
+        backgroundColor: CupertinoColors.systemBackground.withValues(
+          alpha: 0.72,
+        ),
+      ),
+      child: DecoratedBox(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFFFF7FA),
+              CupertinoColors.systemGroupedBackground,
+              Color(0xFFF2F8F8),
+            ],
+            stops: [0, 0.48, 1],
+          ),
+        ),
         child: detailsState.when(
           data: (item) => _DetailsBody(item: item),
           error: (error, stackTrace) => ErrorStateView(
@@ -58,48 +77,70 @@ class _DetailsBody extends ConsumerWidget {
     final personalRating = ratings[item.storageKey];
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+      padding: const EdgeInsets.only(bottom: 40),
       children: [
         DetailsHeader(item: item, personalRating: personalRating),
-        DetailSection(
-          title: 'Genres',
-          child: GenreChips(genres: item.genres),
-        ),
-        const SizedBox(height: 20),
-        WatchlistButton(
-          isSaved: isSaved,
-          onPressed: () {
-            final controller = ref.read(watchlistControllerProvider.notifier);
-            isSaved ? controller.remove(item.storageKey) : controller.add(item);
-          },
-        ),
-        DetailSection(
-          title: 'Personal rating',
-          topSpacing: 18,
-          child: RatingPicker(
-            value: personalRating,
-            onChanged: (rating) {
-              ref
-                  .read(ratingsControllerProvider.notifier)
-                  .saveRating(item.storageKey, rating);
-            },
-          ),
-        ),
-        if (personalRating != null)
-          CupertinoButton(
-            onPressed: () {
-              ref
-                  .read(ratingsControllerProvider.notifier)
-                  .removeRating(item.storageKey);
-            },
-            child: const Text('Clear Rating'),
-          ),
-        DetailSection(
-          title: 'Overview',
-          topSpacing: 16,
-          child: Text(
-            item.overview,
-            style: const TextStyle(fontSize: 16, height: 1.35),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(14, 4, 14, 0),
+          child: Column(
+            children: [
+              WatchlistButton(
+                isSaved: isSaved,
+                onPressed: () {
+                  final controller = ref.read(
+                    watchlistControllerProvider.notifier,
+                  );
+                  isSaved
+                      ? controller.remove(item.storageKey)
+                      : controller.add(item);
+                },
+              ),
+              DetailSection(
+                title: 'Genres',
+                child: GenreChips(genres: item.genres),
+              ),
+              DetailSection(
+                title: 'Personal rating',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RatingPicker(
+                      value: personalRating,
+                      onChanged: (rating) {
+                        ref
+                            .read(ratingsControllerProvider.notifier)
+                            .saveRating(item.storageKey, rating);
+                      },
+                    ),
+                    if (personalRating != null)
+                      CupertinoButton(
+                        padding: const EdgeInsets.only(top: 12),
+                        minimumSize: Size.zero,
+                        onPressed: () {
+                          ref
+                              .read(ratingsControllerProvider.notifier)
+                              .removeRating(item.storageKey);
+                        },
+                        child: const Text('Clear Rating'),
+                      ),
+                  ],
+                ),
+              ),
+              DetailSection(
+                title: 'Overview',
+                child: Text(
+                  item.overview.isEmpty
+                      ? 'No overview is available for this title.'
+                      : item.overview,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    height: 1.42,
+                    letterSpacing: 0,
+                    color: CupertinoColors.label,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],

@@ -12,19 +12,33 @@ class WatchlistButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoButton.filled(
-      onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            isSaved ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
-            size: 18,
-          ),
-          const SizedBox(width: 8),
-          Text(isSaved ? 'Remove from Watchlist' : 'Add to Watchlist'),
-        ],
+    return SizedBox(
+      width: double.infinity,
+      child: CupertinoButton(
+        color: CupertinoColors.systemPink,
+        borderRadius: BorderRadius.circular(18),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+        onPressed: onPressed,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isSaved ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
+              size: 18,
+              color: CupertinoColors.white,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              isSaved ? 'Remove from Watchlist' : 'Add to Watchlist',
+              style: const TextStyle(
+                color: CupertinoColors.white,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
