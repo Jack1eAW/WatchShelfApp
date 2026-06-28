@@ -70,9 +70,9 @@ class _AppTabScaffoldState extends State<AppTabScaffold> {
             ),
           ),
           Positioned(
-            left: 18,
-            right: 18,
-            bottom: MediaQuery.paddingOf(context).bottom + 10,
+            left: 12,
+            right: 12,
+            bottom: MediaQuery.paddingOf(context).bottom + 6,
             child: _LiquidGlassTabBar(
               selectedIndex: _selectedIndex,
               onSelected: (index) => setState(() => _selectedIndex = index),
@@ -95,52 +95,57 @@ class _LiquidGlassTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(30),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 26, sigmaY: 26),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: CupertinoColors.systemBackground.withValues(alpha: 0.58),
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(
-              color: CupertinoColors.white.withValues(alpha: 0.72),
-              width: 0.8,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: CupertinoColors.black.withValues(alpha: 0.12),
-                blurRadius: 28,
-                offset: const Offset(0, 12),
-              ),
-            ],
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: CupertinoColors.black.withValues(alpha: 0.16),
+            blurRadius: 24,
+            offset: const Offset(0, 10),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(7),
-            child: Row(
-              children: [
-                _LiquidGlassTabItem(
-                  label: 'Discover',
-                  icon: CupertinoIcons.film,
-                  activeIcon: CupertinoIcons.film_fill,
-                  selected: selectedIndex == 0,
-                  onTap: () => onSelected(0),
-                ),
-                _LiquidGlassTabItem(
-                  label: 'Watchlist',
-                  icon: CupertinoIcons.bookmark,
-                  activeIcon: CupertinoIcons.bookmark_fill,
-                  selected: selectedIndex == 1,
-                  onTap: () => onSelected(1),
-                ),
-                _LiquidGlassTabItem(
-                  label: 'About',
-                  icon: CupertinoIcons.info_circle,
-                  activeIcon: CupertinoIcons.info_circle_fill,
-                  selected: selectedIndex == 2,
-                  onTap: () => onSelected(2),
-                ),
-              ],
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(28),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: CupertinoColors.systemBackground.withValues(alpha: 0.72),
+              borderRadius: BorderRadius.circular(28),
+              border: Border.all(
+                color: CupertinoColors.white.withValues(alpha: 0.68),
+                width: 0.8,
+              ),
+            ),
+            child: SizedBox(
+              height: 62,
+              child: Row(
+                children: [
+                  _LiquidGlassTabItem(
+                    label: 'Discover',
+                    icon: CupertinoIcons.play_circle,
+                    activeIcon: CupertinoIcons.play_circle_fill,
+                    selected: selectedIndex == 0,
+                    onTap: () => onSelected(0),
+                  ),
+                  _LiquidGlassTabItem(
+                    label: 'Watchlist',
+                    icon: CupertinoIcons.bookmark,
+                    activeIcon: CupertinoIcons.bookmark_fill,
+                    selected: selectedIndex == 1,
+                    onTap: () => onSelected(1),
+                  ),
+                  _LiquidGlassTabItem(
+                    label: 'About',
+                    icon: CupertinoIcons.info_circle,
+                    activeIcon: CupertinoIcons.info_circle_fill,
+                    selected: selectedIndex == 2,
+                    onTap: () => onSelected(2),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -166,44 +171,71 @@ class _LiquidGlassTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeColor = CupertinoTheme.of(context).primaryColor;
+    const activeColor = CupertinoColors.systemPink;
     return Expanded(
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         minimumSize: Size.zero,
         onPressed: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 240),
-          curve: Curves.easeOutCubic,
-          height: 50,
-          decoration: BoxDecoration(
-            color: selected
-                ? CupertinoColors.white.withValues(alpha: 0.72)
-                : CupertinoColors.white.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: selected
-                  ? CupertinoColors.white.withValues(alpha: 0.82)
-                  : CupertinoColors.white.withValues(alpha: 0.18),
-              width: 0.7,
-            ),
-          ),
+        child: Semantics(
+          selected: selected,
+          label: '$label tab',
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                selected ? activeIcon : icon,
-                size: 21,
-                color: selected ? activeColor : CupertinoColors.secondaryLabel,
+              SizedBox(
+                width: 34,
+                height: 30,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    AnimatedScale(
+                      scale: selected ? 1 : 0.72,
+                      duration: const Duration(milliseconds: 220),
+                      curve: Curves.easeOutCubic,
+                      child: AnimatedOpacity(
+                        opacity: selected ? 1 : 0,
+                        duration: const Duration(milliseconds: 180),
+                        child: Container(
+                          width: 32,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            color: activeColor.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: CupertinoColors.white.withValues(
+                                alpha: 0.62,
+                              ),
+                              width: 0.6,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    AnimatedScale(
+                      scale: selected ? 1.06 : 1,
+                      duration: const Duration(milliseconds: 220),
+                      curve: Curves.easeOutBack,
+                      child: Icon(
+                        selected ? activeIcon : icon,
+                        size: 22,
+                        color: selected
+                            ? activeColor
+                            : CupertinoColors.secondaryLabel,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 1),
               Text(
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  fontSize: 10.5,
+                  letterSpacing: 0,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                   color: selected
                       ? activeColor
                       : CupertinoColors.secondaryLabel,
